@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {include file="public/head" /}
+</head>
+
+<body>
+	<!-- 头部 -->
+    {include file="public/top" /}
+    <!-- /头部 -->
+
+    <div class="main-container container-fluid">
+      <div class="page-container">
+
+         <!-- Page Sidebar -->
+         {include file="public/left" /}
+         <!-- /Page Sidebar -->
+
+         <!-- Page Content -->
+         <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="#">系统</a>
+                    </li>
+                    <li class="active">用户管理</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+
+            <!-- Page Body -->
+            <div class="page-body">
+<button type="button" class="btn btn-sm btn-azure btn-addon">
+    <a href="{:url('Admin/add')}"><i class="fa fa-plus"></i> 添加管理员</a>
+</button>
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                    <table class="table table-bordered table-hover">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">管理员账号</th>
+                                <th class="text-center" style="width:30%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name="admins" id="admin"}
+                            <tr>
+                                <td align="center">{$admin.id}</td>
+                                <td align="center">{$admin.name}</td>
+                                <td align="center">
+                                    <a href="{:url('Admin/edit',['id'=>$admin.id])}" class="btn btn-primary btn-sm shiny">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a href="#" onClick="warning('确实要删除吗','{:url('Admin/delete',['id'=>$admin.id])}')" class="btn btn-danger btn-sm shiny">
+                                        <i class="fa fa-trash-o"></i> 删除
+                                    </a>
+                                </td>
+                            </tr>
+                            {/volist}
+                        </tbody>
+                    </table>
+                    <!-- 渲染分页信息 -->
+                    <div style="margin-top:10px; text-align:right;">
+                        {$admins->render()}
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<!-- /Page Body -->
+</div>
+<!-- /Page Content -->
+</div>
+</div>
+
+<!--Basic Scripts-->
+<script src="__ADMIN__/js/jquery_002.js"></script>
+<script src="__ADMIN__/js/bootstrap.js"></script>
+<script src="__ADMIN__/js/jquery.js"></script>
+<!--Beyond Scripts-->
+<script src="__ADMIN__/js/beyond.js"></script>
+
+
+</body>
+</html>

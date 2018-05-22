@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {include file="public/head" /}
+    <link href="__ADMIN__/css/edit.css" rel="stylesheet">
+</head>
+
+<body>
+	<!-- 头部 -->
+    {include file="public/top" /}
+    <!-- /头部 -->
+
+    <div class="main-container container-fluid">
+      <div class="page-container">
+
+         <!-- Page Sidebar -->
+         {include file="public/left" /}
+         <!-- /Page Sidebar -->
+
+         <!-- Page Content -->
+         <div class="page-content">
+            <!-- Page Body -->
+            <div class="page-body">
+
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-blue">
+                                <span class="widget-caption">修改密码</span>
+                            </div>
+                            <div class="widget-body">
+                                <div id="horizontal-form">
+                                    <form class="form-horizontal" role="form" action="" method="post">
+                                        <input type="hidden" name="id" value="" />
+                                        <div class="form-group">
+                                            <label for="password" class="col-sm-2 control-label no-padding-right">账号原密码</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control" id="password" name="password" required="" type="text" placeholder="请输入账号原密码" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="password" class="col-sm-2 control-label no-padding-right">修改后的密码</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control" id="repassword" required="" placeholder="请输入修改后的密码" name="repassword" type="password">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" class="btn btn-default">保存信息</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+</div>
+
+<!--Basic Scripts-->
+<script src="__ADMIN__/js/jquery_002.js"></script>
+<script src="__ADMIN__/js/bootstrap.js"></script>
+<script src="__ADMIN__/js/jquery.js"></script>
+<!--Beyond Scripts-->
+<script src="__ADMIN__/js/beyond.js"></script>
+
+
+
+</body></html>
