@@ -13,9 +13,15 @@ class BaseController extends Controller
      */
     public function _initialize()
     {
-        // if(!session('id') || !session('name')){
-        //    $this->error('您尚未登录',url('Login/login'));
-        // }
+    }
+    /**
+     * 判断是否登录
+     */
+    public function isLogin()
+    {
+        if(!session('id') || !session('name')){
+           $this->error('您尚未登录',url('Login/login'));
+        }
     }
 	/**
 	 * 字符串加密

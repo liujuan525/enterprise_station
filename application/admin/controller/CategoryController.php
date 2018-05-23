@@ -9,6 +9,13 @@ use app\admin\model\Category;
 
 class CategoryController extends BaseController
 {
+	/**
+     * 前置方法
+     */
+    protected $beforeActionList = [
+        'isLogin' // 判断用户是否登录
+    ];
+	// 栏目分类数据表模型
 	protected $category;
 	/**
 	 * 控制器初始化
@@ -37,7 +44,7 @@ class CategoryController extends BaseController
 		return view();
 	}
 	/**
-	 * 修改分类
+	 * 更新栏目分类
 	 */
 	public function edit()
 	{
@@ -46,7 +53,17 @@ class CategoryController extends BaseController
 		if (is_null($category)) {
 			$this -> error('栏目信息不存在!');
 		}
-		
+		if (request() -> isPost()) {
+			$data = input('post.');
+			$this -> checkData('Category', 'edit', $data);
+			$result = $this -> category -> updateCategory($data);
+			if ($result) {
+                $this -> success('更新栏目信息成功!', url('Category/list'));
+			} else {
+				$this -> error('更新栏目信息失败!');
+			}
+		}
+
 		$list = $this -> getCategoryList();
 		$this -> assign(['list' => $list, 'cateinfo' => $category]);
 		return view();
@@ -56,16 +73,64 @@ class CategoryController extends BaseController
 	 */
 	public function list()
 	{
-		$list = $this -> getCategoryList();
+		if (request() -> isPost()) {
+			// 更新排序数值
+			$data = input('post.');
+			$updateResult = [
+				'successCount' => 0,
+				'failedCount' => 0,
+				'failedId' => [],
+				'successId' => []
+			];
+			foreach($data as $k => $v){
+				$result = $this -> category -> updateCategory(['id' => $k, 'category_sort' => $v]);
+				if ($result){
+					$updateResult['successCount'] += 1;
+					array_push($updateResult['successId'], $k);
+				} else {
+					$updateResult['failedCount'] += 1;
+					array_push($updateResult['failedId'], $k);
+				}
+			}
+			if ($updateResult['failedCount']){
+				$this -> error('更新栏目排序失败!');
+			} else {
+				$this -> success('更新栏目排序成功!', url('Category/list'));
+			}
+		}
+		$list = $this -> getCategoryList(); // 获取栏目列表
 		$this -> assign(['list' => $list]);
 		return view();
 	}
 	/**
-	 * 删除分类
+	 * 删除栏目及其子栏目
 	 */
 	public function delete()
 	{
-
+		$cateid = input('id/d'); // 变量类型强制转换为整数类型
+		$ids = $this -> category -> getChilrenId($cateid);
+		$ids[] = $cateid;
+		$updateResult = [
+			'successCount' => 0,
+			'failedCount' => 0,
+			'failedId' => [],
+			'successId' => []
+		];
+		foreach($ids as $k => $cateid){
+			$result = $this -> category -> updateCategoryList($cateid);
+			if ($result){
+				$updateResult['successCount'] += 1;
+				array_push($updateResult['successId'], $cateid);
+			} else {
+				$updateResult['failedCount'] += 1;
+				array_push($updateResult['failedId'], $cateid);
+			}
+		}
+		if ($updateResult['failedCount']){
+			$this -> error('删除栏目及其子栏目失败!');
+		} else {
+			$this -> success('删除栏目及其子栏目成功!', url('Category/list'));
+		}
 	}
 	/**
 	 * 获取栏目列表

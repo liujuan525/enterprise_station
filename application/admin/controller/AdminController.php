@@ -6,13 +6,19 @@ use think\Validate;
 
 class AdminController extends BaseController
 {
+    /**
+     * 前置方法
+     */
+    protected $beforeActionList = [
+        'isLogin'
+    ];
+    // 管理员信息模型
     protected $admin;
     /**
      * 初始化
      */
     public function _initialize()
     {
-        parent::_initialize();
         $this -> admin = new Admin();
     }
     /**

@@ -50,7 +50,7 @@
 
                 <!-- Page Body -->
                 <div class="page-body">
-                    
+
 <div class="row">
     <div class="col-lg-12 col-sm-12 col-xs-12">
         <div class="widget">
@@ -60,14 +60,18 @@
             <div class="widget-body">
                 <div id="horizontal-form">
                     <form class="form-horizontal" role="form" action="" method="post">
-                        <input type="hidden" name="id" value="" />
+                        <input type="hidden" name="id" value="{$cateinfo.id}" />
                         <div class="form-group">
                             <label for="username" class="col-sm-2 control-label no-padding-right">上级栏目</label>
                             <div class="col-sm-6">
-                                <select name="pid">
+                                <select name="category_pid">
                                     <option value="0">顶级栏目</option>
                                     {volist name="list" id="category"}
-                                    <option {if condition="$cateinfo.id eq $category.category_pid"} selected="selected" {/if} value="{$category.id}">{$category.category_name}</option>
+                                    <option {if condition="$cateinfo.category_pid eq $category.id"} selected="selected" {/if} value="{$category.id}">
+                                        {if condition="$category.level neq 0"}|{/if}
+                                        <?php echo str_repeat('-' ,$category['level']*8)?>
+                                        {$category.category_name}
+                                    </option>
                                     {/volist}
                                 </select>
                             </div>
@@ -77,7 +81,7 @@
                         <div class="form-group">
                             <label for="username" class="col-sm-2 control-label no-padding-right">栏目名称</label>
                             <div class="col-sm-6">
-                                <input class="form-control"  placeholder="" value="{$cateinfo.category_name}" name="catename" required="" type="text">
+                                <input class="form-control"  placeholder="" value="{$cateinfo.category_name}" name="category_name" required="" type="text">
                             </div>
                             <p class="help-block col-sm-4 red">* 必填</p>
                         </div>
@@ -101,19 +105,19 @@
                             <div class="col-sm-6">
                                 <div class="radio" style="float:left; margin-right:10px;">
                                     <label>
-                                        <input {if condition="$cateinfo.category_type eq 1"} checked="checked" {/if}  name="type" value="1"  type="radio">
+                                        <input {if condition="$cateinfo.category_type eq 1"} checked="checked" {/if}  name="category_type" value="1"  type="radio">
                                         <span class="text">文章列表</span>
                                     </label>
                                 </div>
                                 <div class="radio" style="float:left; margin-right:10px;">
                                     <label>
-                                        <input {if condition="$cateinfo.category_type eq 2"} checked="checked" {/if}  name="type" class="inverted" value="2" type="radio">
+                                        <input {if condition="$cateinfo.category_type eq 2"} checked="checked" {/if}  name="category_type" class="inverted" value="2" type="radio">
                                         <span class="text">单页</span>
                                     </label>
                                 </div>
                                 <div class="radio" style="float:left; margin-right:10px;">
                                     <label>
-                                        <input {if condition="$cateinfo.category_type eq 3"} checked="checked" {/if}  name="type" class="inverted" value="3" type="radio">
+                                        <input {if condition="$cateinfo.category_type eq 3"} checked="checked" {/if}  name="category_type" class="inverted" value="3" type="radio">
                                         <span class="text">图片列表</span>
                                     </label>
                                 </div>

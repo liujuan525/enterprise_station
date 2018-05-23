@@ -7,6 +7,9 @@ use app\admin\controller\BaseController;
 
 class LoginController extends BaseController
 {
+	protected $beforeActionList = [
+		'isLogin' => ['except' => 'login']
+	];
 	/**
 	 * 管理员登录
 	 */
