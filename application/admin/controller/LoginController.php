@@ -12,11 +12,10 @@ class LoginController extends BaseController
 	 */
 	public function login()
 	{
-		$admin = model('Admin');
 		if (request() -> isPost()) {
 			// 验证验证码
 			$data = input('post.');
-			$result = $admin -> getAdminByName($data['name']);
+			$result = model('Admin') -> getAdminByName($data['name']);
 			if ($result) {
 				if ($result['password'] != $this -> encryptString($data['password'])) {
 					$this -> error('密码错误!');
@@ -42,7 +41,7 @@ class LoginController extends BaseController
 	/**
 	 * 更改密码
 	 */
-	public function changePass($id)
+	public function changePass(int $id)
 	{
 		if (request() -> isPost()) {
 			$result = model('Admin') -> getAdminById($id);

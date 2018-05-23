@@ -6,7 +6,6 @@ use think\Validate;
 
 class AdminController extends BaseController
 {
-    /* Admin 数据表模型 */
     protected $admin;
     /**
      * 初始化
@@ -14,7 +13,7 @@ class AdminController extends BaseController
     public function _initialize()
     {
         parent::_initialize();
-        $this -> admin = model('Admin');
+        $this -> admin = new Admin();
     }
     /**
      * 添加管理员
@@ -29,20 +28,22 @@ class AdminController extends BaseController
             // 添加数据
             $result = $this -> admin -> addAdmin($data);
             if ($result) {
-                $this -> success('添加管理员成功!',url('list'));
+                $this -> success('添加管理员成功!',url('Admin/list'));
             } else {
                 $this -> error('添加管理员失败!');
             }
-            return;
         }
         return view();
     }
     /**
      * 修改管理员信息
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         $result = $this -> admin -> getAdminById($id);
+        if (!$result) {
+            $this -> error('管理员信息不存在!');
+        }
 
         if (request() -> isPost()) {
             $data = input('post.');
@@ -63,10 +64,6 @@ class AdminController extends BaseController
                 $this -> error('更新管理员信息失败!');
             }
         }
-
-        if (!$result) {
-            $this -> error('管理员信息不存在!');
-        }
         $this -> assign('admin', $result);
         return view();
     }
@@ -82,8 +79,9 @@ class AdminController extends BaseController
     /**
      * 删除管理员
      */
-    public function delete($id)
+    public function delete(int $id)
     {
+        // $id = input('post.id/d'); // 指定参数类型
         if (!$id || !is_numeric($id)) {
             $this -> error('数据格式错误!');
         }

@@ -22,8 +22,7 @@ class BaseController extends Controller
 	 */
 	public function encryptString($string)
 	{
-		$salt = '6BSSDFB65257FCAB4E2975CD96B230F7FSDFC4B53D97C10B6';
-        return strtoupper(md5(sha1(md5($string.$salt)).$string));
+        return strtoupper(md5(sha1(md5($string.config('encrypt_salt'))).$string));
 	}
 	/**
      * 数据校验
