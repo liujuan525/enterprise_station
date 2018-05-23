@@ -10,7 +10,8 @@ class AdminController extends BaseController
      * 前置方法
      */
     protected $beforeActionList = [
-        'isLogin'
+        'isLogin',
+        // 'BeforeLoginUrl'
     ];
     // 管理员信息模型
     protected $admin;

@@ -47,5 +47,21 @@ class BaseController extends Controller
     {
         session(null);
     }
+    /**
+     * 记录登录之前的URL
+     */
+    public function BeforeLoginUrl()
+    {
+        $url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; // http://192.168.33.10:8525/admin/index/index.html
+        session('url', $url);
+    }
+    /**
+     * 清除登录之前的url
+     */
+    public function clearUrl()
+    {
+        session('url', null);
+    }
+
 
 }

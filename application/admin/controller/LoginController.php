@@ -8,7 +8,8 @@ use app\admin\controller\BaseController;
 class LoginController extends BaseController
 {
 	protected $beforeActionList = [
-		'isLogin' => ['except' => 'login']
+		'isLogin' => ['except' => 'login'],
+		// 'clearUrl' => ['only' => 'login'],
 	];
 	/**
 	 * 管理员登录
@@ -25,6 +26,9 @@ class LoginController extends BaseController
 				}else{
 					session('id', $result['id']);
 					session('name', $result['name']);
+					// if (session('url')){
+					// 	$this -> redirect(session('url'));
+					// }
 					$this -> success('登录成功!', url('Index/index'));
 				}
 			}else{
