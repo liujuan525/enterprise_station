@@ -21,7 +21,6 @@ class Category extends BaseModel
 	{
 		return $this -> addInfo($data);
 	}
-
 	/**
 	 * 获取栏目列表 排序
 	 */

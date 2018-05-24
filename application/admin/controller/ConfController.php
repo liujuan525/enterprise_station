@@ -31,10 +31,12 @@ class ConfController extends BaseController
 	{
 		if (request() -> isPost()) {
 			$data = input('post.');
-			// dump($data);die;
-			$this -> checkConfName('conf_ename', $data['conf_ename']);
-			$this -> checkConfName('conf_cname', $data['conf_cname']);
 			$this -> checkData('Conf','add',$data); // 验证数据
+			$cInfo = $this -> conf -> queryCname($data['conf_cname']);
+			$eInfo = $this -> conf -> queryEname($data['conf_ename']);
+			if ($cInfo || $eInfo) {
+				$this -> error('配置中文名/英文名已存在!');
+			}
 			$result = $this -> conf -> addConf($data); // 添加成功返回1
 			if ($result) {
                 $this -> success('添加配置成功!',url('Conf/list'));
@@ -55,10 +57,16 @@ class ConfController extends BaseController
 			$data = input('post.');
 			$this -> checkData('Conf','edit',$data); // 验证数据
 			if ($data['conf_cname'] != $conf['conf_cname']) {
-				$this -> checkConfName('conf_cname', $data['conf_cname']);
+				$cInfo = $this -> conf -> queryCname($data['conf_cname']);
+				if ($cInfo) {
+					$this -> error('配置中文名已存在!');
+				}
 			}
 			if ($data['conf_ename'] != $conf['conf_ename']) {
-				$this -> checkConfName('conf_ename', $data['conf_ename']);
+				$eInfo = $this -> conf -> queryEname($data['conf_ename']);
+				if ($eInfo) {
+					$this -> error('配置英文名已存在!');
+				}
 			}
 			$result = $this -> conf -> updateConf($data);
 			if ($result) {
@@ -113,16 +121,6 @@ class ConfController extends BaseController
 			$this -> error('配置信息不存在!');
 		} else {
 			return $conf;
-		}
-	}
-	/**
-	 * 根据配置中文名/英文名查找配置信息
-	 */
-	private function checkConfName($field, $value)
-	{
- 		$conf = $this -> conf -> getConf($field, $value);
-		if ($conf) {
-			$this -> error('配置中文名/英文名已存在!');
 		}
 	}
 

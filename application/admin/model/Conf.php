@@ -23,6 +23,22 @@ class Conf extends BaseModel
 		return $this -> getInfoByField($field, $value);
 	}
 	/**
+	 * 查询中文名
+	 */
+	public function queryCname($cname)
+	{
+		$info = $this -> where(['isDel' => 1, 'conf_cname' => $cname]) -> find();
+		return $info;
+	}
+	/**
+	 * 查询英文名
+	 */
+	public function queryEname($ename)
+	{
+		$info = $this -> where(['isDel' => 1, 'conf_ename' => $ename]) -> find();
+		return $info;
+	}
+	/**
 	 * 添加配置信息
 	 */
 	public function addConf($data)
