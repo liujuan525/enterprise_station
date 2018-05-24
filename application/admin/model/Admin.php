@@ -8,20 +8,25 @@ use app\admin\model\BaseModel;
 class Admin extends BaseModel
 {
 	/**
+	 * 模型初始化
+	 */
+	public function initialize()
+	{
+		parent::initialize();
+	}
+	/**
 	 * 添加管理员
 	 */
 	public function addAdmin($data)
 	{
-		$data = $this -> addTime($data);
-		$result = $this -> save($data);
-		return $result;
+		return $this -> addInfo($data);
 	}
 	/**
 	 * 获取管理员列表
 	 */
 	public function adminList()
 	{
-		$result = $this -> where('isDel', 1) -> order('id', 'desc') -> paginate(2);
+		$result = $this -> order('id', 'desc') -> paginate(2);
 		return $result;
 	}
 	/**
@@ -29,43 +34,28 @@ class Admin extends BaseModel
 	 */
 	public function getAdminById($id)
 	{
-		$result = $this -> find($id);
-		return $result;
+		return $this -> getInfoByField('id', $id);
 	}
 	/**
 	 * 更新管理员信息
 	 */
 	public function updateAdmin($data)
 	{
-		$data = $this -> updateTime($data);
-		$result = $this -> update($data);
-		return $result;
+		return $this -> updateInfo($data);
 	}
 	/**
 	 * 删除管理员
 	 */
 	public function deleteAdmin($id,$data=[])
 	{
-		$data['isDel'] = 2;
-		$data = $this -> updateTime($data);
-		$result = $this -> where('id', $id) -> update($data);
-		return $result;
+		return $this -> deleteInfo($id);
 	}
 	/**
 	 * 根据账号查询管理员信息
 	 */
 	public function getAdminByName($name)
 	{
-		$result = $this -> where(['name'=>$name, 'isDel'=>1]) -> find();
-		return $result;
-	}
-	/**
-	 * 根据id更新信息
-	 */
-	public function updateById($id,$data=[]){
-		$data = $this -> updateTime($data);
-		$result = $this -> where('id', $id) -> update($data);
-		return $result;
+		return $this -> getInfoByField('name', $name);
 	}
 
 

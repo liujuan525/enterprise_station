@@ -55,8 +55,12 @@ class ArticleController extends BaseController
 		if (request() -> isPost()) {
 			$data = input('post.');
 			$this -> checkData('Article','edit',$data); // 验证数据
-			$imgPath = '/uploads'. '/'. $this -> uploadImg();
-			$data['thumb_img'] = $this -> judgeArticleImg($article['thumb_img'], $imgPath);
+			$url = $this -> uploadImg();
+			if (is_null($url)) {
+				$data['thumb_img'] = $article['thumb_img'];
+			} else {
+				$data['thumb_img'] = '/uploads'. '/'. $url;
+			}
 			$result = $this -> article -> updateArticle($data);
 			if ($result) {
                 $this -> success('更新文章成功!',url('Article/list'));
@@ -136,18 +140,6 @@ class ArticleController extends BaseController
 		if ($article) {
 			$this -> error('文章标题已存在');
 		}
-	}
-	/**
-	 * 校验图片是否修改
-	 */
-	private function judgeArticleImg($originImg, $nowImg)
-	{
-		if ($originImg != $nowImg) {
-			$imgPath = $nowImg;
-		} else {
-			$imgPath = $originImg;
-		}
-		return $imgPath;
 	}
 	/**
 	 * 删除文章的同时删除图片链接

@@ -8,13 +8,18 @@ use app\admin\model\BaseModel;
 class Category extends BaseModel
 {
 	/**
+	 * 模型初始化
+	 */
+	public function initialize()
+	{
+		parent::initialize();
+	}
+	/**
 	 * 添加栏目
 	 */
 	public function addCategory($data)
 	{
-		$data = $this -> addTime($data);
-		$category = $this -> save($data);
-		return $category;
+		return $this -> addInfo($data);
 	}
 
 	/**
@@ -22,7 +27,7 @@ class Category extends BaseModel
 	 */
 	public function getList()
 	{
-		$cateres = $this -> where('isDel', 1) -> order('category_sort desc') -> select();
+		$cateres = $this -> order('category_sort desc') -> select();
 		return $this -> sort($cateres);
 	}
 	/**
@@ -46,8 +51,7 @@ class Category extends BaseModel
 	 */
 	public function getCategoryById($id)
 	{
-		$category = $this -> where('id', $id) -> find();
-		return $category;
+		return $this -> getInfoByField('id', $id);
 	}
 
 	/**
@@ -55,7 +59,7 @@ class Category extends BaseModel
 	 */
 	public function getChilrenId($cateid)
 	{
-		$cateres = $this -> where('isDel', 1) -> select();
+		$cateres = $this -> select();
 		return $this -> _getChilrenId($cateres, $cateid);
 	}
 	/**
@@ -78,30 +82,21 @@ class Category extends BaseModel
 	 */
 	public function updateCategory($data)
 	{
-		$data = $this -> updateTime($data);
-		$result = $this -> update($data);
-		return $result;
+		return $this -> updateInfo($data);
 	}
 	/**
-	 * 批量修改栏目信息
+	 * 删除栏目信息
 	 */
 	public function updateCategoryList($cateid)
 	{
-		$time = date('Y-m-d H:i:s', time());
-		$data = [
-			'updateTime' => $time,
-			'isDel' => 2
-		];
-		$result = $this -> where('id', $cateid) -> update($data);
-		return $result;
+		return $this -> deleteInfo($cateid);
 	}
 	/**
 	 * 根据栏目名称获取信息
 	 */
 	public function getArticleByName($name)
 	{
-		$category = $this -> where(['isDel' => 1, 'category_name' => $name]) -> find();
-		return $category;
+		return $this -> getInfoByField('category_name', $name);
 	}
 
 

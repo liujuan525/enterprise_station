@@ -88,7 +88,6 @@ class AdminController extends BaseController
      */
     public function delete(int $id)
     {
-        // $id = input('post.id/d'); // 指定参数类型
         if (!$id || !is_numeric($id)) {
             $this -> error('数据格式错误!');
         }
