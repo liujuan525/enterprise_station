@@ -72,7 +72,24 @@ create table es_link(
     updateTime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录更新时间',
   PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT charset=utf8 COMMENT='链接表';
+/**
+ * 配置表
+ */
+create table es_conf(
+    id int(11) unsigned NOT NULL AUTO_INCREMENT,
 
+    conf_cname varchar(64) NOT NULL DEFAULT '' COMMENT '配置中文名',
+    conf_ename varchar(64) NOT NULL DEFAULT '' COMMENT '配置英文名',
+    conf_type tinyint(2) NOT NULL DEFAULT 1 COMMENT '配置类型:1-单行文本 2-多行文本 3-单选按钮 4-复选框 5-下拉菜单',
+    conf_value varchar(255) NOT NULL DEFAULT '' COMMENT '配置值',
+    conf_values varchar(255) NOT NULL DEFAULT '' COMMENT '配置可选值',
+    conf_sort int(3) NOT NULL DEFAULT 10 COMMENT '配置排序',
+
+    isDel tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否删除:1-未删除,2-已删除',
+    addTime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录添加时间',
+    updateTime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录更新时间',
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT charset=utf8 COMMENT='配置表';
 
 
 
