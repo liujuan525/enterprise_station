@@ -95,6 +95,14 @@ class Category extends BaseModel
 		$result = $this -> where('id', $cateid) -> update($data);
 		return $result;
 	}
+	/**
+	 * 根据栏目名称获取信息
+	 */
+	public function getArticleByName($name)
+	{
+		$category = $this -> where(['isDel' => 1, 'category_name' => $name]) -> find();
+		return $category;
+	}
 
 
 

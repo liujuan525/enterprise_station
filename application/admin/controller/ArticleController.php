@@ -32,10 +32,7 @@ class ArticleController extends BaseController
 		if (request() -> isPost()) {
 			$data = input('post.');
 			$this -> checkData('Article','add',$data); // 验证数据
-			$article = $this -> article -> getArticleByTitle($data['title']); // 文章标题唯一
-			if ($article) {
-				$this -> error('文章标题已存在');
-			}
+			$this -> checkArticleTitle($data['title']);
 			$data['thumb_img'] = '/uploads'. '/'. $this -> uploadImg();
 			$result = $this -> article -> addArticle($data); // 添加成功返回1
 			if ($result) {
@@ -54,16 +51,12 @@ class ArticleController extends BaseController
 	public function edit()
 	{
 		$id = input('id/d');
-		$this -> judgeArticle($id);
+		$article = $this -> judgeArticle($id);
 		if (request() -> isPost()) {
 			$data = input('post.');
+			$this -> checkData('Article','edit',$data); // 验证数据
 			$imgPath = '/uploads'. '/'. $this -> uploadImg();
-			// 判断缩略图是否修改
-			if ($article['thumb_img'] != $imgPath) {
-				$data['thumb_img'] = $imgPath;
-			} else {
-				$data['thumb_img'] = $article['thumb_img'];
-			}
+			$data['thumb_img'] = $this -> judgeArticleImg($article['thumb_img'], $imgPath);
 			$result = $this -> article -> updateArticle($data);
 			if ($result) {
                 $this -> success('更新文章成功!',url('Article/list'));
@@ -97,10 +90,11 @@ class ArticleController extends BaseController
 		if (!$id || !is_numeric($id)) {
             $this -> error('数据格式错误!');
         }
-		$this -> judgeArticle($id);
+		$article = $this -> judgeArticle($id);
+		// $this -> deleteArticleImg($article['thumb_img']);
         $result = $this -> article -> deleteArticle($id);
         if ($result) {
-            $this -> success('删除文章成功!', url('Admin/list'));
+            $this -> success('删除文章成功!', url('Article/list'));
         } else {
             $this -> error('删除文章失败!');
         }
@@ -108,7 +102,7 @@ class ArticleController extends BaseController
 	/**
 	 * 上传图片
 	 */
-	public function uploadImg()
+	private function uploadImg()
 	{
 		$file = request() -> file('thumb_img');
 		if ($file) {
@@ -124,11 +118,45 @@ class ArticleController extends BaseController
 	/**
 	 * 根据id判断文章是否存在
 	 */
-	public function judgeArticle($id)
+	private function judgeArticle($id)
 	{
 		$article = $this -> article -> getArticleById($id);
 		if (!$article) {
 			$this -> error('文章信息不存在!');
+		} else {
+			return $article;
+		}
+	}
+	/**
+	 * 校验文章标题是否重复
+	 */
+	private function checkArticleTitle($title)
+	{
+		$article = $this -> article -> getArticleByTitle($title);
+		if ($article) {
+			$this -> error('文章标题已存在');
+		}
+	}
+	/**
+	 * 校验图片是否修改
+	 */
+	private function judgeArticleImg($originImg, $nowImg)
+	{
+		if ($originImg != $nowImg) {
+			$imgPath = $nowImg;
+		} else {
+			$imgPath = $originImg;
+		}
+		return $imgPath;
+	}
+	/**
+	 * 删除文章的同时删除图片链接
+	 */
+	private function deleteArticleImg($img)
+	{
+		$thumbPath = $_SERVER['DOCUMENT_ROOT'] . $img;
+		if (file_exists($thumbPath)) {
+			@unlink($thumbPath);
 		}
 	}
 

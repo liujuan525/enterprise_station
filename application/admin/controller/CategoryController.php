@@ -32,6 +32,7 @@ class CategoryController extends BaseController
 		if (request() -> isPost()) {
 			$data = input('post.');
 			$this -> checkData('Category', 'add', $data);
+			$this -> checkCategoryName($data['category_name']);
 			$result = $this -> category -> addCategory($data);
 			if ($result) {
 				$this -> success('添加栏目成功!', url('Category/list'));
@@ -56,6 +57,9 @@ class CategoryController extends BaseController
 		if (request() -> isPost()) {
 			$data = input('post.');
 			$this -> checkData('Category', 'edit', $data);
+			if ($data['category_name'] != $category['category_name']) {
+				$this -> checkCategoryName($data['category_name']);
+			}
 			$result = $this -> category -> updateCategory($data);
 			if ($result) {
                 $this -> success('更新栏目信息成功!', url('Category/list'));
@@ -139,6 +143,16 @@ class CategoryController extends BaseController
 	{
 		$list = $this -> category -> getList();
 		return $list;
+	}
+	/**
+	 * 校验栏目名称是否重复
+	 */
+	public function checkCategoryName($name)
+	{
+		$category = $this -> category -> getArticleByName($name);
+		if ($category) {
+			$this -> error('栏目名称已存在!');
+		}
 	}
 
 

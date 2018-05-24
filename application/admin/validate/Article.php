@@ -11,7 +11,7 @@ class Article extends Validate
 	 * 验证规则
 	 */
 	protected $rule = [
-		'title' => 'require',
+		'title' => 'require|max:25',
 		'author' => 'require',
 		'content' => 'require',
 		'category_id' => 'require|number',
@@ -21,6 +21,7 @@ class Article extends Validate
 	 */
 	protected $message = [
 		'title.require' => '文章标题不能为空',
+		'title.max' => '文章标题最多不能超过25个字节',
 		'author.require' => '文章作者不能为空',
 		'content.require' => '文章内容不能为空',
 		'category_id.require' => '文章所属栏目不能为空',
