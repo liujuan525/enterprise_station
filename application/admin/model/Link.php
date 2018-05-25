@@ -17,11 +17,9 @@ class Link extends BaseModel
 	/**
 	 * 根据链接标题或者链接地址查询链接
 	 */
-	public function getLink($title, $url)
+	public function getLinkByField($field, $value)
 	{
-		$link = $this -> where('link_title', $title)
-					  -> whereOr('link_url', $url)
-					  -> find();
+		$link = $this -> where(['isDel'=>1,$field=>$value]) -> find();
 		return $link;
 	}
 	/**

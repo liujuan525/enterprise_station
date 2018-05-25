@@ -73,7 +73,7 @@ class BaseModel extends Model
 	 */
 	public function getInfoByField($field, $value)
 	{
-		$info = $this -> where($field, $value) -> find();
+		$info = $this -> where(['isDel' => 1, $field => $value]) -> find();
 		return $info;
 	}
 

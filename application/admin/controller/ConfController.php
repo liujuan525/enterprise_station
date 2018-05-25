@@ -83,6 +83,31 @@ class ConfController extends BaseController
 	 */
 	public function list()
 	{
+		if (request() -> isPost()) {
+			// 更新排序数值
+			$data = input('post.');
+			$updateResult = [
+				'successCount' => 0,
+				'failedCount' => 0,
+				'failedId' => [],
+				'successId' => []
+			];
+			foreach($data as $k => $v){
+				$result = $this -> conf -> updateConf(['id' => $k, 'conf_sort' => $v]);
+				if ($result){
+					$updateResult['successCount'] += 1;
+					array_push($updateResult['successId'], $k);
+				} else {
+					$updateResult['failedCount'] += 1;
+					array_push($updateResult['failedId'], $k);
+				}
+			}
+			if ($updateResult['failedCount']){
+				$this -> error('更新配置项排序失败!');
+			} else {
+				$this -> success('更新配置项排序成功!', url('Conf/list'));
+			}
+		}
 		$confs = $this -> conf -> getConfList();
 		$this -> assign('confs', $confs);
 		return view();
@@ -109,6 +134,32 @@ class ConfController extends BaseController
 	 */
 	public function conf()
 	{
+		$confs = $this -> conf -> getList();
+		if (request() -> isPost()) {
+			$data = input('post.');
+			$updateResult = [
+				'successCount' => 0,
+				'failedCount' => 0,
+				'failedId' => [],
+				'successId' => []
+			];
+			foreach ($data as $k => $v) {
+				$result = $this -> conf -> updateConfByName($k, ['conf_value' => $v]);
+				if ($result){
+					$updateResult['successCount'] += 1;
+					array_push($updateResult['successId'], $k);
+				} else {
+					$updateResult['failedCount'] += 1;
+					array_push($updateResult['failedId'], $k);
+				}
+			}
+			if ($updateResult['failedCount']){
+				$this -> error('更新配置项失败!');
+			} else {
+				$this -> success('更新配置项成功!');
+			}
+		}
+		$this -> assign('confs', $confs);
 		return view();
 	}
 	/**

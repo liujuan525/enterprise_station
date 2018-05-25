@@ -49,3 +49,19 @@
 				break;
 		}
 	}
+
+	function stringToArray($string)
+	{
+		if ($string) {
+			$arr = explode('，', $string);
+		}
+		return $arr;
+	}
+
+
+
+
+
+
+
+

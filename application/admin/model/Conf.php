@@ -28,6 +28,7 @@ class Conf extends BaseModel
 	public function queryCname($cname)
 	{
 		$info = $this -> where(['isDel' => 1, 'conf_cname' => $cname]) -> find();
+
 		return $info;
 	}
 	/**
@@ -73,6 +74,23 @@ class Conf extends BaseModel
 	public function getConfById($id)
 	{
 		return $this -> getInfoByField('id', $id);
+	}
+	/**
+	 * 获取配置列表
+	 */
+	public function getList($page=20)
+	{
+		$confs = $this -> paginate($page);
+		return $confs;
+	}
+	/**
+	 * 根据配置项名称更新配置项
+	 */
+	public function updateConfByName($ename, $data)
+	{
+		$data = $this -> updateTime($data);
+		$result = $this -> where(['isDel' => 1, 'conf_ename' => $ename]) -> update($data);
+		return $result;
 	}
 
 

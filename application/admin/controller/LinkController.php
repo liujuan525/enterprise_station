@@ -116,8 +116,9 @@ class LinkController extends BaseController
 	 */
 	private function checkLink($title, $url)
 	{
-		$link = $this -> link -> getLink($title, $url);
-		if ($link) {
+		$link1 = $this -> link -> getLinkByField('link_title', $title);
+		$link2 = $this -> link -> getLinkByField('link_url', $url);
+		if ($link1 || $link2) {
 			$this -> error('链接名称/链接地址已存在!');
 		}
 	}

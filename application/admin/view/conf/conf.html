@@ -8,15 +8,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!--Basic Styles-->
-    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
-    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
-    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+    <link href="__ADMIN__/css/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/css/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/css/weather-icons.css" rel="stylesheet">
 
     <!--Beyond styles-->
-    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
-    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
-    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
-    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+    <link id="beyond-link" href="__ADMIN__/css/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/css/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/css/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/css/animate.css" rel="stylesheet">
     
 </head>
 <body>
@@ -61,47 +61,54 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                    <?php foreach ($confres as $k => $v):?>
+                                {volist name="confs" id="conf"}
                                     <tr>
-                                        <td align="right"><?php echo $v['cnname'];?></td>
+                                        <td align="right">{$conf.conf_cname}</td>
                                         <td align="left">
-                                        <?php if($v['type']==1):?>
-                                            <input name="<?php echo $v['enname'];?>" type="text" class="form-control" style="width:620px;" value="<?php echo $v['value'];?>">
-                                        <?php elseif($v['type']==2):?>
-                                            <textarea name="<?php echo $v['enname'];?>" class="form-control" align="left" style="width:620px;">
-                                                <?php echo $v['value'];?>
-                                            </textarea>
-                                        <?php elseif($v['type']==3):
-                                            if($v['values']){
-                                                $arrradio=explode(',', $v['values']);
-                                            }
-                                            foreach ($arrradio as $k1 => $v1):
-                                        ?>
-                                        <label style="margin-right:15px;">
-                                        <input <?php if($v['value']==$v1){echo 'checked="checked"';} ?> name="<?php echo $v['enname'];?>" value="<?php echo $v1;?>" type="radio">
-                                        <span class="text"><?php echo $v1;?></span>
-                                        </label>
-                                        <?php endforeach;?>
-                                        <?php elseif($v['type']==4):?>
-                                            <label>
-                                                <input <?php if($v['value']==$v['values']){echo 'checked="checked"';} ?> name="<?php echo $v['enname'];?>" class="colored-success" value="<?php echo $v['values'];?>" type="checkbox">
-                                                <span class="text"><?php echo $v['values'];?></span>
-                                            </label>
-                                        <?php elseif($v['type']==5):
-                                            if($v['values']){
-                                                $arrselect=explode(',', $v['values']);
-                                            }
-                                        ?>
-                                        <select name="<?php echo $v['enname'];?>">
-                                        <?php foreach ($arrselect as $k2 => $v2):?>
-                                            <option <?php if($v['value']==$v2){echo 'selected="selected"';} ?> value="<?php echo $v2;?>"><?php echo $v2;?></option>
-                                        <?php endforeach;?>
-                                        </select>
+                                            {if condition="$conf.conf_type eq 1"}
+                                            <input name="{$conf.conf_ename}" type="text" class="form-control" style="width:620px;" value="{$conf.conf_value}">
 
-                                        <?php endif;?>
+                                            {elseif condition="$conf.conf_type eq 2"}
+                                            <textarea name="{$conf.conf_ename}" class="form-control" style="width:620px;">
+                                            {$conf.conf_value}
+                                            </textarea>
+
+                                            {elseif condition="$conf.conf_type eq 3"}
+
+                                        {volist name="$conf.conf_values|stringToArray" id="v1"}
+                                        <label style="margin-right:15px;">
+                                        <input name="{$conf.conf_ename}" {if condition="$conf.conf_value eq $v1"}checked="checked"{/if} value="{$v1}" type="radio">
+                                        <span class="text">{$v1}</span>
+                                        </label>
+                                        {/volist}
+
+                                        {elseif condition="$conf.conf_type eq 3"}
+                                        
+                                        {volist name="$conf.conf_values|stringToArray" id="v1"}
+                                        <label style="margin-right:15px;">
+                                        <input name="{$conf.conf_ename}" {if condition="$conf.conf_value eq $v1"}checked="checked"{/if} value="{$v1}" type="radio">
+                                        <span class="text">{$v1}</span>
+                                        </label>
+                                        {/volist}
+
+                                            <!-- {elseif condition="$conf.conf_type eq 4"}
+                                            <label>
+                                                <input {if condition="$conf.conf_value eq $conf.conf_values"}checked="checked"{/if} name="{$conf.conf_ename}" class="colored-success" value="{$conf.conf_values}" type="checkbox">
+                                                <span class="text">{$conf.conf_values}</span>
+                                            </label> -->
+
+                                            {elseif condition="$conf.conf_type eq 5"}
+
+                                        <select name="{$conf.conf_ename}">
+                                            {volist name="$conf.conf_values|stringToArray" id="v2"}
+                                                <option {if condition="$conf.conf_value eq $v2"}selected="selected"{/if}  value="{$v2}">{$v2}</option>
+                                            {/volist}
+                                        </select>
+                                        {/if}
+
                                         </td>
                                     </tr>
-                                    <?php endforeach;?>
+                                {/volist}
 
                             </tbody>
                         </table>
@@ -123,11 +130,11 @@
 	</div>
 
 	    <!--Basic Scripts-->
-    <script src="__ADMIN__/style/jquery_002.js"></script>
-    <script src="__ADMIN__/style/bootstrap.js"></script>
-    <script src="__ADMIN__/style/jquery.js"></script>
+    <script src="__ADMIN__/js/jquery_002.js"></script>
+    <script src="__ADMIN__/js/bootstrap.js"></script>
+    <script src="__ADMIN__/js/jquery.js"></script>
     <!--Beyond Scripts-->
-    <script src="__ADMIN__/style/beyond.js"></script>
+    <script src="__ADMIN__/js/beyond.js"></script>
     
 
 
