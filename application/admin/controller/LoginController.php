@@ -19,6 +19,8 @@ class LoginController extends BaseController
 		if (request() -> isPost()) {
 			// 验证验证码
 			$data = input('post.');
+			$this -> checkCaptcha($data['captcha_code']);
+			// dump($data);die;
 			$result = model('Admin') -> getAdminByName($data['name']);
 			if ($result) {
 				if ($result['password'] != $this -> encryptString($data['password'])) {
@@ -73,6 +75,15 @@ class LoginController extends BaseController
 			}
 		}
 		return view();
+	}
+	/**
+	 * 校验验证码
+	 */
+	public function checkCaptcha($captcha)
+	{
+		if (!captcha_check($captcha)) {
+			$this -> error('验证码错误!');
+		}
 	}
 
 }

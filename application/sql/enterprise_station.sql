@@ -35,6 +35,15 @@ create table es_category(
     updateTime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录更新时间',
   PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT charset=utf8 COMMENT='分类表';
+-- 添加
+alter table es_category add category_keywords varchar(64) NOT NULL DEFAULT '' COMMENT '栏目关键字';
+alter table es_category add category_desc varchar(128) NOT NULL DEFAULT '' COMMENT '栏目描述';
+alter table es_category add category_content text NOT NULL COMMENT '栏目内容';
+-- 修改
+alter table es_category modify category_keywords varchar(64) NOT NULL DEFAULT '' COMMENT '栏目关键字' after category_sort;
+alter table es_category modify category_desc varchar(128) NOT NULL DEFAULT '' COMMENT '栏目描述' after category_keywords;
+alter table es_category modify category_content text NOT NULL COMMENT '栏目内容' after category_desc;
+
 /**
  * 文章表
  */

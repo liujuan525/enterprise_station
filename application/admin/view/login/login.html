@@ -16,6 +16,10 @@
                 <div class="loginbox-textbox">
                     <input class="form-control" placeholder="请输入密码" name="password" type="password">
                 </div>
+                <div class="loginbox-textbox">
+                    <input class="form-control" style="width:100px;float:left;" name="captcha_code" type="text">
+                    <img src="{:captcha_src()}" onclick="this.src='{:captcha_src()}?'+Math.random();" width="120" style="float:left; cursor:pointer;" alt="captcha" />
+                </div>
                 <div class="loginbox-submit">
                     <input class="btn btn-primary btn-block" value="登录" type="submit">
                 </div>

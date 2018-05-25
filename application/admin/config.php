@@ -21,5 +21,4 @@ return [
      */
     // 加密字符串的盐值
     'encrypt_salt' => '6BSSDFB65257FCAB4E2975CD96B230F7FSDFC4B53D97C10B6',
-
 ];
