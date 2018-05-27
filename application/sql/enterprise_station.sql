@@ -99,8 +99,55 @@ create table es_conf(
     updateTime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录更新时间',
   PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT charset=utf8 COMMENT='配置表';
+/**
+ * 规则表
+ */
+CREATE TABLE `es_auth_rule` (
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
 
+  `name` char(80) NOT NULL DEFAULT '' COMMENT '规则的控制器/方法',
+  `title` char(20) NOT NULL DEFAULT '' COMMENT '规则名称',
+  `type` tinyint(1) NOT NULL DEFAULT 1,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `condition` char(100) NOT NULL DEFAULT '',  # 规则附件条件,满足附加条件的规则,才认为是有效的规则
+  `pid` int(8) NOT NULL DEFAULT 0 COMMENT '上级id',
+  `level` int(2) NOT NULL DEFAULT 0 COMMENT '级别',
+  `sort` int(3) NOT NULL DEFAULT 10 COMMENT '排序',
 
+  `isDel` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否删除:1-未删除,2-已删除',
+  `addTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录添加时间',
+  `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='规则表';
+/**
+ * 用户组表
+ */
+CREATE TABLE `es_auth_group` (
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+
+  `title` char(100) NOT NULL DEFAULT '',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `rules` char(80) NOT NULL DEFAULT '' COMMENT '规则表ids',
+
+  `isDel` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否删除:1-未删除,2-已删除',
+  `addTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录添加时间',
+  `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户组表';
+/**
+ * 用户组明细表
+ */
+CREATE TABLE `es_auth_group_access` (
+  `uid` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(8) unsigned NOT NULL COMMENT 'es_auth_group表id',
+
+  `isDel` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否删除:1-未删除,2-已删除',
+  `addTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录添加时间',
+  `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录更新时间',
+  PRIMARY KEY (`uid`),
+  KEY `uid` (`uid`),
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户组明细表';
 
 
 
