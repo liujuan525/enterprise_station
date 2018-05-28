@@ -5,6 +5,7 @@
 namespace app\admin\controller;
 use think\Controller;
 use think\Session;
+use think\Request;
 
 class BaseController extends Controller
 {
@@ -13,6 +14,18 @@ class BaseController extends Controller
      */
     public function _initialize()
     {
+        // $auth = new Auth();
+        // $request = Request::instance();
+
+        // $controller = $request -> controller();
+        // $action = $request -> action();
+        // $name = $controller.'/'.$action;
+        // $notCheck=array('Index/index','Admin/list','Login/logout', 'Login/login');
+        // if (!in_array($name, $notCheck)) {
+        //     if (!$auth -> check($name, session('id'))) {
+        //         $this -> error('没有权限', url('Index/index'));
+        //     }
+        // }
     }
     /**
      * 判断是否登录

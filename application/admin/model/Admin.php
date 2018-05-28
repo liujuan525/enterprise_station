@@ -19,7 +19,11 @@ class Admin extends BaseModel
 	 */
 	public function addAdmin($data)
 	{
-		return $this -> addInfo($data);
+		$data = $this -> addTime($data);
+		$info = $this -> save($data);
+		$id = $this -> getLastInsID();
+		return $id;
+		// return $this -> addInfo($data);
 	}
 	/**
 	 * 获取管理员列表

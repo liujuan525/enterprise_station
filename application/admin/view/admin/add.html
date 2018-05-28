@@ -45,6 +45,17 @@
                 <div id="horizontal-form">
                     <form class="form-horizontal" role="form" action="" method="post">
                         <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">所属用户组</label>
+                            <div class="col-sm-6">
+                                <select name="group_id">
+                                    {volist name="authGroupRes" id="authGroupRes"}
+                                        <option value="{$authGroupRes.id}">{$authGroupRes.title}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                        <div class="form-group">
                             <label for="username" class="col-sm-2 control-label no-padding-right">管理员账号</label>
                             <div class="col-sm-6">
                                 <input class="form-control" id="name" placeholder="请输入账号" name="name" required="" type="text">

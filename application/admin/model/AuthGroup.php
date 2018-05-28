@@ -43,6 +43,13 @@ class AuthGroup extends BaseModel
 	{
 		return $this -> updateInfo($data);
 	}
+	/**
+	 * 删除用户组
+	 */
+	public function deleteAuthGroup($id)
+	{
+		return $this -> deleteInfo($id);
+	}
 
 
 

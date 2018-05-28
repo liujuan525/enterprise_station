@@ -28,7 +28,7 @@
                                         <li>
                         <a href="#">管理员管理</a>
                     </li>
-                                        <li class="active">编辑管理员信息</li>
+                                        <li class="active">修改管理员信息</li>
                                         </ul>
                 </div>
                 <!-- /Page Breadcrumb -->
@@ -46,6 +46,17 @@
                 <div id="horizontal-form">
                     <form class="form-horizontal" role="form" action="" method="post">
                         <input type="hidden" name="id" value="{$admin.id}" />
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">所属用户组</label>
+                            <div class="col-sm-6">
+                                <select name="group_id">
+                                    {volist name="authGroupRes" id="authGroupRes"}
+                                        <option {if condition="$authGroupRes['id'] eq $groupId"}selected="selected"{/if} value="{$authGroupRes.id}">{$authGroupRes.title}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
                         <div class="form-group">
                             <label for="username" class="col-sm-2 control-label no-padding-right">管理员账号</label>
                             <div class="col-sm-6">

@@ -6,6 +6,12 @@ use think\Validate;
 
 class AuthRuleController extends BaseController
 {
+	/**
+     * 前置方法
+     */
+    protected $beforeActionList = [
+        'isLogin' // 判断用户是否登录
+    ];
 	// 管理员信息模型
     protected $authRule;
     /**

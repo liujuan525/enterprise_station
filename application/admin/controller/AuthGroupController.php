@@ -6,6 +6,12 @@ use think\Validate;
 
 class AuthGroupController extends BaseController
 {
+	/**
+     * 前置方法
+     */
+    protected $beforeActionList = [
+        'isLogin' // 判断用户是否登录
+    ];
 	// 管理员信息模型
     protected $authGroup;
     /**
@@ -80,6 +86,13 @@ class AuthGroupController extends BaseController
 	public function delete()
 	{
 		$id = input('id/d');
+		$groupRes = $this -> checkGroupById($id);
+		$result = $this -> authGroup -> deleteAuthGroup($id);
+		if ($result !== false){
+			$this -> success('删除用户组成功!', url('AuthGroup/list'));
+		} else {
+			$this -> error('删除用户组失败!');
+		}
 	}
 	/**
 	 * 查看用户组信息是否存在
