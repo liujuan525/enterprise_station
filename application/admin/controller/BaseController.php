@@ -6,6 +6,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Session;
 use think\Request;
+use app\admin\controller\Auth;
 
 class BaseController extends Controller
 {
@@ -21,9 +22,11 @@ class BaseController extends Controller
         // $action = $request -> action();
         // $name = $controller.'/'.$action;
         // $notCheck=array('Index/index','Admin/list','Login/logout', 'Login/login');
-        // if (!in_array($name, $notCheck)) {
-        //     if (!$auth -> check($name, session('id'))) {
-        //         $this -> error('没有权限', url('Index/index'));
+        // if (session('id') != 1 || session('id') != 4) { // 超级管理员
+        //     if (!in_array($name, $notCheck)) {
+        //         if (!$auth -> check($name, session('id'))) {
+        //             $this -> error('没有权限', url('Index/index'));
+        //         }
         //     }
         // }
     }
@@ -74,6 +77,38 @@ class BaseController extends Controller
     public function clearUrl()
     {
         session('url', null);
+    }
+    /**
+     * [unique 获取唯一值(大写)]
+     */
+    public static function unique()
+    {
+        $key = mt_rand(1,99999).uniqid('bluerose',true).time();
+        return strtoupper(md5(md5($key)));
+    }
+    /**
+     * 获取参数
+     */
+    public function getParameter($param)
+    {
+        $data = [];
+        foreach($param as $key => $value){
+            $getValue = input("$value");
+            if(!empty($getValue)) {
+                $data["$value"] = $getValue;
+            }
+        }
+        return $data;
+    }
+    /**
+     * 校验手机号码 -> lj [2018/04/18]
+     */
+    public function isMobile($mobile)
+    {
+        $result = preg_match('/^(13[0-9]|15[012356789]|17[01678]|18[0-9]|14[57])[0-9]{8}$/', $mobile);
+        if (!$result) {
+            return json(['status' => 10015, 'msg' => '手机号格式错误']);
+        }
     }
 
 

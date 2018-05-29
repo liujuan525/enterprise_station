@@ -34,7 +34,7 @@ class AdminController extends BaseController
             $this -> checkData('Admin', 'add', $adminData); // 验证数据
             $adminData['password'] = $this -> encryptString($adminData['password']); // 密码加密
             $this -> findAdmin($adminData['name']); // 校验管理员账号
-            Db::startTrans();
+            Db::startTrans(); // 开启事务
             try{
                 $id = $this -> admin -> addAdmin($adminData);
                 if (!$id) {
@@ -47,9 +47,9 @@ class AdminController extends BaseController
                 if (!$result) {
                     throw new \Exception('添加管理员失败!');
                 }
-                Db::commit();
+                Db::commit(); // 提交
             } catch (\Exception $e) {
-                Db::rollback();
+                Db::rollback(); // 回滚
                 $this -> error($e -> getMessage());
             }
             $this -> success('添加管理员成功!',url('Admin/list'));
